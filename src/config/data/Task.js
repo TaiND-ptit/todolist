@@ -49,14 +49,17 @@ export const data = [
 
 export const columnsFromBackend = {
   [uuidv4()]: {
+    id: 1,
     title: 'To-do',
     items: data,
   },
   [uuidv4()]: {
+    id: 2,
     title: 'In Progress',
     items: [],
   },
   [uuidv4()]: {
+    id: 3,
     title: 'Done',
     items: [],
   },

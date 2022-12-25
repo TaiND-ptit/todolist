@@ -1,10 +1,11 @@
+import { useSelector } from 'react-redux';
 import { Outlet, Navigate } from 'react-router-dom'
+import { selectAuth } from '../../redux/slice/authSlice';
 
 const PrivateRoutes = () => {
-    let auth = {'token':true}
-    // console.log(auth)
+    const state = useSelector(selectAuth);
     return(
-        auth.token ? <Outlet/> : <Navigate to="/"/>
+        state.isLoggedIn ? <Outlet/> : <Navigate to="/"/>
     )
 }
 

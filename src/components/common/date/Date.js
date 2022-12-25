@@ -1,18 +1,23 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {DateContainer} from './DateStyle'
-import type { DatePickerProps } from 'antd';
 import { DatePicker } from 'antd'
-const Date = () => {
-
-  const onChange: DatePickerProps['onChange'] = (date, dateString) => {
-    console.log(date, dateString);
+const Date = ({enterDate}) => {
+  const [enteredDate, setEnteredDate] = useState("");
+  const onChange = (date,dateString) => {
+    // console.log(dateString)
+    setEnteredDate(dateString)
   };
+
+  useEffect(()=>{
+    enterDate(enteredDate);
+  },[enterDate, enteredDate])
 
   return (
     <DateContainer>
       <DatePicker 
-      onChange={onChange} 
-      size='large'/>
+        onChange={onChange} 
+        size='large'
+        />
     </DateContainer>
   )
 }

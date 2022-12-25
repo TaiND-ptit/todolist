@@ -2,7 +2,8 @@ import React from 'react';
 import {TaskInformation, IconContainer, LabelIcon} from './TaskCardStyle.js'
 import { Draggable } from "react-beautiful-dnd";
 
-const TaskCard = ({ item, index }) => {
+const TaskCard = ({ item, index}) => {
+  console.log(item);
 
   const handelDelete = () => {
     console.log('da xoa');

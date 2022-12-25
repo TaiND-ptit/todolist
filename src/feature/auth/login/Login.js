@@ -9,12 +9,15 @@ import {
   ImageLogin,
   FormContainer,
   FormTitle,
-} from "./LoginStyle";
+} from "./LoginStyled";
 import {useNavigate } from "react-router-dom";
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { loginSuccess } from '../../../redux/slice/authSlice';
 
 const Login = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [users, setUsers] = useState([]);
   useEffect(()=>{
@@ -29,24 +32,26 @@ const Login = () => {
 
   const onFinish = (values) => {
      const {username, password} = values;
-     const isUser = users.filter((user, index) =>{
+     const findUser = users.find((user, index) =>{
         return user.username === username && user.password=== password;
      })
-    console.log(isUser);
-     if(isUser.length>0){
-      return navigate("/listtask");
-     }else{
+    //  console.log(findUser)
+
+     if(!findUser){
        notification['error']({
-      message: 'ToDo list',
-      description:'Tài khoản hoặc mật khẩu không chính xác',
-    });
+       message: 'ToDo list',
+       description:'Tài khoản hoặc mật khẩu không chính xác',
+     })
+     }else{
+       dispatch(loginSuccess(findUser));
+       navigate("/listtask");
      }
+    
   };
 
   const onFinishFailed = () =>{
 
   }
-
 
   return (
     <LoginContainer>

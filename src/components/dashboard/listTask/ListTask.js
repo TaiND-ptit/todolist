@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { columnsFromBackend } from '../../../config/data/Task';
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import {
@@ -14,13 +14,23 @@ import {
 import { TaskTitle } from '../addTask/AddTaskStyle'
 import TaskCard from '../taskCard/TaskCard';
 import { Input } from 'antd';
+import API from '../../../config/api/api';
 const { Search } = Input;
 
 const ListTask = () => {
+  const [gettasks, setGetTasks] = useState([]);
   const [columns, setColumns] = useState(columnsFromBackend);
+  // Goi API
+  useEffect(()=>{
+    API.get(`tasks`)
+    .then(res => {
+      const tasks = res.data;
+      setGetTasks(tasks);
+    },[])
+  })
 
   const onSearch = (value) => console.log(value);
-
+  
   const onDragEnd = (result, columns, setColumns) => {
     if (!result.destination) return;
     const { source, destination } = result;
@@ -83,7 +93,7 @@ const ListTask = () => {
       <Container>
         <TaskColumnStyles>
           {Object.entries(columns).map(([columnId, column], index) => {
-            return (
+            return (          
               <Droppable key={columnId} droppableId={columnId}>
                 {(provided, snapshot) => (
                   <TaskList
@@ -92,7 +102,7 @@ const ListTask = () => {
                   >
                     <Title>{column.title}</Title>
                     {column.items.map((item, index) => (
-                      <TaskCard key={item} item={item} index={index} />
+                      <TaskCard key={item} item={item} index={index}/>
                     ))}
                     {provided.placeholder}
                   </TaskList>

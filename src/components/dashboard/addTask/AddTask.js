@@ -1,5 +1,5 @@
-import React from 'react';
-import { Button, Form, Input } from "antd";
+import React, { useState } from 'react';
+import { Form, Input } from "antd";
 import {
   TaskContainer,
   TaskTitle,
@@ -10,8 +10,37 @@ import {
   ButtonAnt
 } from "./AddTaskStyle";
 import Date from '../../common/date/Date';
+import API from '../../../config/api/api';
 const { TextArea } = Input;
 const AddTask = () => {
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [createDate, setCreateDate] = useState('');
+ 
+  const handleDate = (enteredDate) => {
+    setCreateDate(enteredDate);
+  }
+
+  const onFinish = () => {
+    console.log(title, description, createDate)
+    const task = {
+      title,
+      description,
+      createDate
+    }
+    
+    // Post du lieu len API
+    API.post(`tasks`,task)
+    .then(res => {
+      const p = res.data;
+    })
+
+    setTitle('');
+    setDescription('');
+    setCreateDate(null)
+  }
+
+
   return (
     <>   
     <TaskContainer>
@@ -28,17 +57,26 @@ const AddTask = () => {
             initialValues={{
             remember: true,
             }}
-            // onFinish={onFinish}
+            onFinish={onFinish}
           >
+
               <InputAnt
                 placeholder="Title"
                 size="large"
+                value={title}
+                onChange={(e)=>setTitle(e.target.value)}
               />
+           
+       
               <TextArea
               rows={4}
-              placeholder="Description" />
+              placeholder="Description" 
+              value={description}
+              onChange={(e)=>setDescription(e.target.value)}
+              />
+            
             <DateContainer>
-                <Date/>
+                <Date enterDate={handleDate}/>
             </DateContainer>
             
               <ButtonAnt
